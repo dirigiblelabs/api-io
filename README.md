@@ -5,8 +5,10 @@
 
 ## Overview
 
-* [Files API](http://www.dirigible.io/api/files.html) - provides an access to the underlying File System, where the Dirigible server is deployed
-* [Streams API](http://www.dirigible.io/api/streams.html) - provides classes and utilities for working with streams
+* [Files API](http://www.dirigible.io/api/files.html)
+  - provides an access to the underlying File System, where the Dirigible server is deployed
+* [Streams API](http://www.dirigible.io/api/streams.html)
+  - provides classes and utilities for working with streams
 
 
 
