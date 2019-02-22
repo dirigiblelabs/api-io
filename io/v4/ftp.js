@@ -99,7 +99,7 @@ function FTPClientManager(host, port, userName, password) {
 
 	this.getFullPath = function(path, fileName) {
 		if (path && path.length > 0 && fileName && fileName.length > 0) {
-			return path + fileName;
+			return path.endsWith("/") ? path + fileName : path + "/" + fileName;
 		} else if (path && !fileName) {
 			return path;
 		}
