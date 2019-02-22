@@ -18,11 +18,25 @@
 var bytes = require("io/v4/bytes");
 var streams = require("io/v4/streams");
 
+/**
+ * Returns a FTP Client
+ * 
+ * @param {host} the ftp host
+ * @param {port} the ftp port
+ * @param {userName} the ftp user
+ * @param {password} the ftp user's password
+ * @return {FTPClient} the FTP Client
+ */
 exports.getClient = function(host, port, userName, password) {
 	var manager = new FTPClientManager(host, port, userName, password);
 	return new FTPClient(manager);
 };
 
+/**
+ * Internal FTP Client Manager
+ * 
+ * @private
+ */
 function FTPClientManager(host, port, userName, password) {
 	this.host = host;
 	this.port = port;
@@ -108,6 +122,9 @@ function FTPClientManager(host, port, userName, password) {
 	}
 }
 
+/**
+ * FTP Client
+ */
 function FTPClient(manager) {
 	this.manager = manager;
 
@@ -155,6 +172,13 @@ function FTPClient(manager) {
 		return inputStream.isValid() ? inputStream.readText() : null;
 	};
 
+	/**
+	 * Returns the folder
+	 * 
+	 * @param {path} the path to the folder
+	 * @param {folderName} the name of the folder
+	 * @return {FTPFolder} the folder
+	 */
 	this.getFolder = function(path, folderName) {
 		var exists = this.manager.setCurrentFolder(path, folderName);
 		return exists ? new FTPFolder(this.manager, path, folderName) : null;
@@ -203,6 +227,9 @@ function FTPClient(manager) {
 		throw new Error("Not Implemented");
 	};
 
+	/**
+	 * Close the FTP Client
+	 */
 	this.close = function() {
 		this.manager.close();
 	};
