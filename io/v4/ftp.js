@@ -87,6 +87,16 @@ function FTPClientManager(host, port, userName, password) {
 		}
 	};
 
+	this.createFolder = function(path, folderName) {
+		checkConnection(this);
+		return this.instance.makeDirectory(this.getFullPath(path, folderName));
+	};
+
+	this.deleteFolder = function(path, folderName) {
+		checkConnection(this);
+		return this.instance.removeDirectory(this.getFullPath(path, folderName));
+	};
+
 	this.getFullPath = function(path, fileName) {
 		if (path && path.length > 0 && fileName && fileName.length > 0) {
 			return path + fileName;
@@ -223,8 +233,15 @@ function FTPClient(manager) {
 	};
 
 	this.createFolder = function(path, folderName) {
-		// TODO Implement me!
-		throw new Error("Not Implemented");
+		return this.manager.createFolder(path, folderName);
+	};
+
+	this.deleteFile = function(path, fileName) {
+		return this.manager.deleteFile(path, fileName);
+	};
+
+	this.deleteFolder = function(path, folderName) {
+		return this.manager.deleteFolder(path, folderName);
 	};
 
 	/**
@@ -273,6 +290,7 @@ function FTPObject(manager, instance, path, name) {
 }
 
 function FTPFolder(manager, path, name) {
+	this.client = new FTPClient(manager);
 	this.manager = manager;
 	this.path = path;
 	this.name = name;
@@ -296,8 +314,8 @@ function FTPFolder(manager, path, name) {
 	};
 
 	this.getFolder = function(folderName) {
-		// TODO Implement me!
-		throw new Error("Not Implemented");
+		var folderPath = this.manager.getFullPath(this.path, this.name);
+		return this.client.getFolder(folderPath, folderName);
 	};
 
 	this.list = function() {
@@ -335,42 +353,41 @@ function FTPFolder(manager, path, name) {
 
 	this.createFile = function(fileName, inputStream) {
 		var folderPath = this.manager.getFullPath(this.path, this.name);
-		this.manager.createFile(folderPath, fileName, inputStream);
-		return this.getFile(fileName);
+		return this.client.createFile(folderPath, fileName, inputStream);
 	};
 
 	this.createFileBinary = function(fileName, bytes) {
-		var inputStream = streams.createByteArrayInputStream(bytes);
-		return this.createFile(fileName, inputStream);
+		var folderPath = this.manager.getFullPath(this.path, this.name);
+		return this.client.createFileBinary(folderPath, fileName, bytes);
 	};
 
 	this.createFileText = function(fileName, text) {
-		var inputStream = streams.createByteArrayInputStream(bytes.textToByteArray(text));
-		return this.createFile(fileName, inputStream);
+		var folderPath = this.manager.getFullPath(this.path, this.name);
+		return this.client.createFileText(folderPath, fileName, text);
 	};
 
 	this.createFolder = function(folderName) {
-		// TODO Implement me!
-		throw new Error("Not Implemented");
+		var folderPath = this.manager.getFullPath(this.path, this.name);
+		return this.client.createFolder(folderPath, folderName);
 	};
 
 	this.delete = function() {
-		this.manager.deleteFile(this.path, this.name);
+		return this.client.deleteFolder(this.path, this.name);
 	};
 
 	this.deleteFile = function(fileName) {
-		var folderPath = this.getFullPath(this.path, this.name);
-		return this.manager.deleteFile(folderPath, fileName);
+		var folderPath = this.manager.getFullPath(this.path, this.name);
+		return this.client.deleteFile(folderPath, fileName);
 	};
 
 	this.deleteFolder = function(folderName) {
-		// TODO Implement me!
-		throw new Error("Not Implemented");
+		var folderPath = this.manager.getFullPath(this.path, this.name);
+		return this.client.deleteFolder(folderPath, folderName);
 	};
 }
 
 function FTPFile(manager, instance, path, name) {
-	this.manager = manager;
+	this.client = new FTPClient(manager);
 	this.instance = instance;
 	this.path = path;
 	this.name = name;
@@ -384,34 +401,30 @@ function FTPFile(manager, instance, path, name) {
 	};
 
 	this.getContent = function() {
-		return this.manager.getFileStream(this.path, this.name);
+		return this.client.getFile(this.path, this.name);
 	};
 
 	this.getContentBinary = function() {
-		var inputStream = this.getContent();
-		return inputStream && inputStream.native ? inputStream.readBytes() : null;
+		return this.client.getFileBinary(this.path, this.name);
 	};
 
 	this.getContentText = function() {
-		var inputStream = this.getContent();
-		return inputStream && inputStream.native ? inputStream.readText() : null;
+		return this.client.getFileText(this.path, this.name);
 	};
 
 	this.setContent = function(inputStream) {
-		this.manager.createFile(this.path, this.fileName, inputStream);
+		return this.client.createFile(this.path, this.name, inputStream);
 	};
 
 	this.setContentBinary = function(bytes) {
-		var inputStream = streams.createByteArrayInputStream(bytes);
-		this.manager.createFile(this.path, this.fileName, inputStream);
+		return this.client.createFileBinary(this.path, this.name, bytes);
 	};
 
 	this.setContentText = function(text) {
-		var inputStream = streams.createByteArrayInputStream(bytes.textToByteArray(text));
-		this.manager.createFile(this.path, this.fileName, inputStream);
+		return this.client.createFileText(this.path, this.name, text);
 	};
 
 	this.delete = function() {
-		this.manager.deleteFile(this.path, this.fileName);
+		return this.client.deleteFile(this.path, this.name);
 	};
 }
