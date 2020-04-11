@@ -42,7 +42,7 @@ exports.toJavaScriptBytes = function(internalBytes) {
  */
 exports.textToByteArray = function(text) {
 	var javaString = new java.lang.String(text);
-	var native = javaString.getBytes();
+	var native = org.eclipse.dirigible.api.v3.io.BytesFacade.textToByteArray(text);
 	return exports.toJavaScriptBytes(native);
 };
 
