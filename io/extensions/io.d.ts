@@ -245,13 +245,13 @@ declare module "@dirigible/io" {
          * Creates an InputStream pointing to a file by the given path
          * @param path
          */
-        function createInputStream(path: string): stream;
+        function createInputStream(path: string): InputStream;
 
         /**
          * Creates an OutputStream pointing to a file by the given path
          * @param path
          */
-        function createOutputStream(path: string): stream;
+        function createOutputStream(path: string): OutputStream;
 
         function traverse(path);
 
@@ -276,8 +276,6 @@ declare module "@dirigible/io" {
         function resize(original, type, width, height);
     }
     module streams {
-        function copyLarge(input, output);
-
         /**
          * Copies an InputStream to an OutputStream
          * @param input
@@ -322,6 +320,7 @@ declare module "@dirigible/io" {
         function createZipOutputStream(outputStream: OutputStream): ZipOutputStream;
 
         interface ZipInputStream {
+            isValid():boolean;
             /**
              * Returns the next entry from the archive or null if no more entries found
              */
