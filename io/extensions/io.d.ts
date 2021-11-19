@@ -1,7 +1,4 @@
 // @ts-ignore
-class stream {
-}
-
 class byte {
 }
 
@@ -573,7 +570,7 @@ declare module "@dirigible/io" {
          * Gets the file content
          * @param inputStream
          */
-        getContentBinary();
+        getContentBinary(inputStream);
 
         /**
          * Sets the file content from an InputStream
@@ -597,7 +594,7 @@ declare module "@dirigible/io" {
          * Appends file content from an InputStream
          * @param inputStream
          */
-        appendContent(inputStream: stream): boolean;
+        appendContent(inputStream: InputStream): boolean;
 
         /**
          * Appends file content from an byte array
@@ -660,7 +657,7 @@ declare module "@dirigible/io" {
          * @param fileName
          * @param inputStream
          */
-        createFile(fileName: string, inputStream: stream): boolean;
+        createFile(fileName: string, inputStream: InputStream): boolean;
 
         /**
          * Creates file from byte array and return true if the file was created successfully
@@ -740,7 +737,7 @@ declare module "@dirigible/io" {
          * @param fileName
          * @param inputStream
          */
-        createFile(path: string, fileName: string, inputStream: stream): boolean;
+        createFile(path: string, fileName: string, inputStream: InputStream): boolean;
 
         /**
          * Creates file from byte array and return true if the file was created successfully
@@ -764,7 +761,7 @@ declare module "@dirigible/io" {
          * @param fileName
          * @param inputStream
          */
-        appendFile(path: string, fileName: string, inputStream: stream): boolean;
+        appendFile(path: string, fileName: string, inputStream: InputStream): boolean;
 
         /**
          * Appends byte array to file and return true if the file was created successfully
