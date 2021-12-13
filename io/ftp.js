@@ -8,7 +8,7 @@
  * Contributors:
  *   SAP - initial API and implementation
  */
-var ftp = require('io/v4/ftp');
-for(var propertyName in ftp) {
+const ftp = require('io/v4/ftp');
+for(const propertyName in ftp) {
 	exports[propertyName] = ftp[propertyName];
 }
