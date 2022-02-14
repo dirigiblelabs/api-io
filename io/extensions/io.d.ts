@@ -305,18 +305,18 @@ declare module "@dirigible/io" {
     }
     module zip {
         /**
-        * Creates zip archive from @sourcePath in @zipTargetPath path
+        * Creates zip archive from sourcePath in zipTargetPath path
         * @param sourcePath
           * @param zipTargetPath
         */
-        function zip(sourcePath, zipTargetPath);
+        function zip(sourcePath: string, zipTargetPath: string);
 
         /**
-            * Unzips zip archive in @zipPath to @targetPath path
+            * Unzips zip archive in zipPath to targetPath path
             * @param zipPath
              * @param targetPath
                  */
-        function unzip(zipPath, targetPath);
+        function unzip(zipPath: string, targetPath: string);
 
         /**
          * Returns the Zip archive reader object
